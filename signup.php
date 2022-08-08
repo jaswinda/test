@@ -1,65 +1,37 @@
 <?php
 
- include 'DatabaseConfig.php';
- // Creating MySQL Connection.
- $con = mysqli_connect($HostName,$HostUser,$HostPass,$DatabaseName);
- 
-
- $email = $_POST['email'];
- 
- // Getting Password from JSON $obj array and store into $password.
- $password = $_POST['password'];
+include 'DatabaseConfig.php';
+include '/helper_functions/authentication_functions.php';
+// Creating MySQL Connection.
+$con = mysqli_connect($HostName, $HostUser, $HostPass, $DatabaseName);
 
 
- 
- //Applying User Login query with email and password.
- 
-    $userQuery = "SELECT * FROM users WHERE username ='$email'";
-    $sendingQuery = mysqli_query($con, $userQuery);
-    $checkQuery = mysqli_num_rows($sendingQuery);
+if (isset($_POST['email']) && $_POST['password']) {
 
-    if ($checkQuery > 0) {
-        // if Username is already registered
-        $data=[
-            'email'=>$email,
-            'success'=>false,
-            'message'=>'User Already Exists.'
-        ];
-        echo json_encode($data);
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    //check if the email is already in the database
+    $check_email = "SELECT * FROM users WHERE email = '$email'";
+    $result = mysqli_query($con, $check_email);
+    $count = mysqli_num_rows($result);
+    if ($count > 0) {
+        echo json_encode(
+            [
+                'success' => true,
+                'message' => 'Email already exists'
+            ]
+        );
     } else {
-
-            trySignup();
+        signUp($email, $password);
     }
-
-function trySignup()
-{
-    global $con;
-    global $email;
-    global $password;
-
-    $hashPwd = password_hash($password, PASSWORD_DEFAULT);
-
-    $insert = "INSERT INTO users (username,password)VALUES('$email','$hashPwd')";
-    $query = mysqli_query($con, $insert);
-
-    if ($query) {
-        //after the query is sucessfully executed!
-        $data=[
-            'email'=>$email,
-            'success'=>true,
-            'message'=>'Signup Successful'
-        ];
-        echo json_encode($data);
-
-    } else {
-
-        $data=[
-            'email'=>$email,
-            'success'=>false,
-            'message'=>'SignUp Failed.'
-        ];
-        echo json_encode($data);
-    }
+} else {
+    echo json_encode(
+        [
+            'message' => 'Please fill all the fields.',
+            'success' => false
+        ]
+    );
 }
 
-?>
+

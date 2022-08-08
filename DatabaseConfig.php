@@ -3,7 +3,7 @@
  $HostName = "localhost";
  
  //Define your MySQL Database Name here.
- $DatabaseName = "test";
+ $DatabaseName = "demo_api_database";
  
  //Define your Database User Name here.
  $HostUser = "root";
