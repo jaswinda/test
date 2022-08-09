@@ -1,71 +1,40 @@
 <?php
 
- include 'DatabaseConfig.php';
- // Creating MySQL Connection.
- $con = mysqli_connect($HostName,$HostUser,$HostPass,$DatabaseName);
-    if( isset($_POST['email']) && isset($_POST['password']) ) //check is token is sent by the user
-        {
-        $email = $_POST['email'];
-        $password = $_POST['password'];
+include 'DatabaseConfig.php';
+include 'helper_functions/authentication_functions.php';
+// Creating MySQL Connection.
+$con = mysqli_connect($HostName, $HostUser, $HostPass, $DatabaseName);
 
-        $sql = "SELECT * FROM users where username = '$email'";
-        $result = $con->query($sql);
-        
-        if ($result->num_rows > 0) {
 
-            while ($row[] = $result->fetch_assoc()) {
+if (isset($_POST['email']) && isset($_POST['password'])) {
 
-                $tem = $row;
-            }
+    $email = $_POST['email'];
+    $password = $_POST['password'];
 
-            $dbPWD = $tem[0]['password'];
-
-            if (password_verify($password, $dbPWD)) {
-                $userid = $tem[0]['id'];
-                    tokenGenerate($userid);
-            } else {
-
-                $data=['success'=>false, 'message'=>'Password you entered was incorrect.'];
-                echo json_encode($data);
-            }
-
-        } else {
-
-            $data=['success'=>false, 'message'=>'The user is not registered.'];
-            echo json_encode($data);
-        }
-    }else{
-        $data=['success'=>false, 'message'=>'Email and Password are required.'];
-
-        echo json_encode($data);
+    //check if the email is already in the database
+    $check_email = "SELECT * FROM users WHERE email = '$email'";
+    $result = mysqli_query($con, $check_email);
+    $count = mysqli_num_rows($result);
+    if ($count > 0) {
+      //check if the password is correct
+      $databasePassword= mysqli_fetch_assoc($result)['PASSWORD'];
+      login($password, $databasePassword);
+     
+    } else {
+        echo json_encode(
+            [
+                'success' => true,
+                'message' => 'User Not Found'
+            ]
+        );
     }
+} else {
+    echo json_encode(
+        [
+            'message' => 'Please fill all the fields.',
+            'success' => false
+        ]
+    );
+}
 
-    function tokenGenerate($userid){
 
-        global $con;
-        global $email;
-        $length = 78;
-        $token = bin2hex(random_bytes($length));
-        $insert = "INSERT INTO user_sessions (uid,token)VALUES('$userid','$token')";
-        $query = mysqli_query($con, $insert);
-    
-
-        if ($query) {
-            //after the query is sucessfully executed!
-            $data=[
-                'email'=>$email,
-                'token'=>$token,
-                'success'=>true,
-                'user_id'=>$userid,
-                'message'=>'Login Successful'
-            ];
-            echo json_encode($data);
-
-        } else {
-
-            $data=['success'=>false, 'message'=>'Failed to login.'];
-
-            echo json_encode($data);
-        }
-    }
-?>
