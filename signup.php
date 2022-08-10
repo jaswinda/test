@@ -3,7 +3,6 @@
 include 'DatabaseConfig.php';
 include 'helper_functions/authentication_functions.php';
 // Creating MySQL Connection.
-$con = mysqli_connect($HostName, $HostUser, $HostPass, $DatabaseName);
 
 
 if (isset($_POST['email']) && isset($_POST['password'])) {

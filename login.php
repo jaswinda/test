@@ -3,7 +3,7 @@
 include 'DatabaseConfig.php';
 include 'helper_functions/authentication_functions.php';
 // Creating MySQL Connection.
-$con = mysqli_connect($HostName, $HostUser, $HostPass, $DatabaseName);
+
 
 
 if (isset($_POST['email']) && isset($_POST['password'])) {
@@ -17,8 +17,10 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
     $count = mysqli_num_rows($result);
     if ($count > 0) {
       //check if the password is correct
-      $databasePassword= mysqli_fetch_assoc($result)['PASSWORD'];
-      login($password, $databasePassword);
+      $data=mysqli_fetch_assoc($result);
+      $databasePassword= $data['PASSWORD'];
+      $userId= $data['id'];
+      login($password, $databasePassword, $userId);
      
     } else {
         echo json_encode(
