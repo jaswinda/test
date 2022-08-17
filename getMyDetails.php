@@ -23,27 +23,7 @@ include 'helper_functions/authentication_functions.php';
             ]
         );
     }
-    // if(isset($_GET['token'])){
-    //     if(checkIdValidUser($_GET['token'])){
-    //         echo json_encode(
-    //             [
-    //                 'success' => true,
-    //                 'message' => 'User logged in successfully'
-    //             ]
-    //         );
-    //     }else{
-    //         echo json_encode(
-    //             [
-    //                 'success' => false,
-    //                 'message' => 'User login failed'
-    //             ]
-    //         );
-    //     }
-    // }else{
-    //     echo json_encode(
-    //         [
-    //             'success' => false,
-    //             'message' =>'Access denied'
-    //         ]
-    //     );
-    // }
+?>
+
+
+

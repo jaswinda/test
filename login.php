@@ -25,7 +25,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
     } else {
         echo json_encode(
             [
-                'success' => true,
+                'success' => false,
                 'message' => 'User Not Found'
             ]
         );
