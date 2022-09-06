@@ -3,7 +3,7 @@
 include 'DatabaseConfig.php';
 include 'helper_functions/authentication_functions.php';
 //get categories from the database
- $categories = "SELECT * FROM categories";
+ $categories = "SELECT products.id, products.image, products.description, products.price, categories.name as category FROM products join categories on products.category_id = categories.id";
     $result = mysqli_query($con, $categories);
     if ($result) {
         $data = [];
@@ -14,7 +14,7 @@ include 'helper_functions/authentication_functions.php';
             [
                 'success' => true,
                 'data' => $data,
-                'message' => "Catgories fetched successfully"
+                'message' => "Products fetched successfully"
             ]
         );
     } else {
