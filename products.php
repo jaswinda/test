@@ -38,7 +38,7 @@ function getProducts()
 {
     global $con;
 
-    $sql = "SELECT * FROM products";
+    $sql = "SELECT * FROM products where is_deleted=0";
     $query = mysqli_query($con, $sql);
 
     if ($query) {
