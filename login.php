@@ -4,8 +4,6 @@ include 'DatabaseConfig.php';
 include 'helper_functions/authentication_functions.php';
 // Creating MySQL Connection.
 
-
-
 if (isset($_POST['email']) && isset($_POST['password'])) {
 
     $email = $_POST['email'];
@@ -20,7 +18,8 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
       $data=mysqli_fetch_assoc($result);
       $databasePassword= $data['PASSWORD'];
       $userId= $data['id'];
-      login($password, $databasePassword, $userId);
+      $isAdmin= $data['isAdmin']=='1';
+      login($password, $databasePassword, $userId, $isAdmin);
      
     } else {
         echo json_encode(

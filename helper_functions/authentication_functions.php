@@ -22,7 +22,7 @@ function signUp($email, $password)
         );
     }
 }
-function login($password, $databasePassword, $userID)
+function login($password, $databasePassword, $userID, $isAdmin)
 {
     //insert the user into the database
 
@@ -38,7 +38,8 @@ function login($password, $databasePassword, $userID)
                 [
                     'success' => true,
                     'message' => 'User logged in successfully',
-                    'token' => $token
+                    'token' => $token,
+                    'isAdmin'=>$isAdmin
                 ]
             );
         } else {
@@ -86,7 +87,7 @@ function checkIfAdmin($token)
         $count = mysqli_num_rows($result);
         if ($count > 0) {
             $user = mysqli_fetch_assoc($result);
-            if ($user['isAdmin'] == 1) {
+            if ($user['isAdmin'] == '1') {
                 return true;
             } else {
                 return false;
