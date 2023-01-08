@@ -22,7 +22,30 @@ function signUp($email, $password)
         );
     }
 }
-function login($password, $databasePassword, $userID, $isAdmin)
+function addMerchant($email, $password)
+{
+    //insert the user into the database
+    global $con;
+    $encrypted_password = password_hash($password, PASSWORD_DEFAULT);
+    $insert_user = "INSERT INTO users (email, password, role) VALUES ('$email', '$encrypted_password', 'merchant')";
+    $result = mysqli_query($con, $insert_user);
+    if ($result) {
+        echo json_encode(
+            [
+                'success' => true,
+                'message' => 'Merchant created successfully'
+            ]
+        );
+    } else {
+        echo json_encode(
+            [
+                'success' => false,
+                'message' => 'Merchant creation failed'
+            ]
+        );
+    }
+}
+function login($password, $databasePassword, $userID, $role)
 {
     //insert the user into the database
 
@@ -39,7 +62,7 @@ function login($password, $databasePassword, $userID, $isAdmin)
                     'success' => true,
                     'message' => 'User logged in successfully',
                     'token' => $token,
-                    'isAdmin'=>$isAdmin
+                    'role'=>$role
                 ]
             );
         } else {
@@ -87,7 +110,7 @@ function checkIfAdmin($token)
         $count = mysqli_num_rows($result);
         if ($count > 0) {
             $user = mysqli_fetch_assoc($result);
-            if ($user['isAdmin'] == '1') {
+            if ($user['role'] == 'admin') {
                 return true;
             } else {
                 return false;

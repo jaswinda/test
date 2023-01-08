@@ -4,6 +4,7 @@ include 'DatabaseConfig.php';
 include 'helper_functions/authentication_functions.php';
 // Creating MySQL Connection.
 
+
 if (isset($_POST['email']) && isset($_POST['password'])) {
 
     $email = $_POST['email'];
@@ -14,20 +15,14 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
     $result = mysqli_query($con, $check_email);
     $count = mysqli_num_rows($result);
     if ($count > 0) {
-      //check if the password is correct
-      $data=mysqli_fetch_assoc($result);
-      $databasePassword= $data['password'];
-      $userId= $data['id'];
-      $role= $data['role'];
-      login($password, $databasePassword, $userId, $role);
-     
-    } else {
         echo json_encode(
             [
                 'success' => false,
-                'message' => 'User Not Found'
+                'message' => 'Email already exists'
             ]
         );
+    } else {
+        addMerchant($email, $password);
     }
 } else {
     echo json_encode(
