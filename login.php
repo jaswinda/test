@@ -19,7 +19,17 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
       $databasePassword= $data['password'];
       $userId= $data['id'];
       $role= $data['role'];
-      login($password, $databasePassword, $userId, $role);
+      try {
+        login($password, $databasePassword, $userId, $role);
+      } catch (\Throwable $th) {
+        echo json_encode([
+            'success'=>false,
+            'message'=>"User login failed",
+            'error'=>$th->getMessage()
+        
+        ]);
+      }
+      
      
     } else {
         echo json_encode(

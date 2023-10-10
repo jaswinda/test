@@ -3,7 +3,7 @@
  $HostName = "localhost";
  
  //Define your MySQL Database Name here.
- $DatabaseName = "cake_store";
+ $DatabaseName = "doctor_appointment_system_database";
  
  //Define your Database User Name here.
  $HostUser = "root";

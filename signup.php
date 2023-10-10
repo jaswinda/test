@@ -5,10 +5,14 @@ include 'helper_functions/authentication_functions.php';
 // Creating MySQL Connection.
 
 
-if (isset($_POST['email']) && isset($_POST['password'])) {
+if (isset($_POST['email']) && isset($_POST['password'])
+&& (isset($_POST['name']))
+
+) {
 
     $email = $_POST['email'];
     $password = $_POST['password'];
+    $name = $_POST['name'];
 
     //check if the email is already in the database
     $check_email = "SELECT * FROM users WHERE email = '$email'";
@@ -22,7 +26,7 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
             ]
         );
     } else {
-        signUp($email, $password);
+        signUp($email, $password, $name);
     }
 } else {
     echo json_encode(

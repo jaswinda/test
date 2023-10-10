@@ -1,26 +1,39 @@
 <?php
-function signUp($email, $password)
+function signUp($email, $password, $name)
 {
     //insert the user into the database
     global $con;
     $encrypted_password = password_hash($password, PASSWORD_DEFAULT);
-    $insert_user = "INSERT INTO users (email, password) VALUES ('$email', '$encrypted_password')";
-    $result = mysqli_query($con, $insert_user);
-    if ($result) {
-        echo json_encode(
-            [
-                'success' => true,
-                'message' => 'User created successfully'
-            ]
-        );
-    } else {
+    try {
+        $insert_user = "INSERT INTO users (email, password, name, role) VALUES ('$email', '$encrypted_password', '$name', '1')";
+        $result = mysqli_query($con, $insert_user);
+        if ($result) {
+            echo json_encode(
+                [
+                    'success' => true,
+                    'message' => 'User created successfully'
+                ]
+            );
+        } else {
+            echo json_encode(
+                [
+                    'success' => false,
+                    'message' => 'User creation failed'
+                ]
+            );
+        }
+    } catch (\Throwable $th) {
         echo json_encode(
             [
                 'success' => false,
-                'message' => 'User creation failed'
-            ]
-        );
+                'message' => 'User creation failed',
+                'error'=> $th->getMessage()
+
+                ]
+            
+            );
     }
+ 
 }
 function addMerchant($email, $password)
 {
