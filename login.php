@@ -19,8 +19,16 @@ if (isset($_POST['email']) && isset($_POST['password'])) {
       $databasePassword= $data['password'];
       $userId= $data['id'];
       $role= $data['role'];
+      $data= [
+        'id'=>$data['id'],
+        'name'=>$data['name'],
+        'email'=>$data['email'],
+        'phone'=>$data['phone'],
+        'role'=>$data['role'],
+      ];
+
       try {
-        login($password, $databasePassword, $userId, $role);
+        login($password, $databasePassword, $userId, $role, $data);
       } catch (\Throwable $th) {
         echo json_encode([
             'success'=>false,

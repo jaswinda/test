@@ -11,3 +11,6 @@
  //Define your Database Password here.
  $HostPass = ""; 
  $con = mysqli_connect($HostName, $HostUser, $HostPass, $DatabaseName);
+
+ //cors configurations
+   

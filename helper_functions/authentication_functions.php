@@ -58,7 +58,7 @@ function addMerchant($email, $password)
         );
     }
 }
-function login($password, $databasePassword, $userID, $role)
+function login($password, $databasePassword, $userID, $role, $data)
 {
     //insert the user into the database
 
@@ -75,14 +75,16 @@ function login($password, $databasePassword, $userID, $role)
                     'success' => true,
                     'message' => 'User logged in successfully',
                     'token' => $token,
-                    'role'=>$role
+                    'role'=>$role,
+                    'data'=>$data
                 ]
             );
         } else {
             echo json_encode(
                 [
                     'success' => false,
-                    'message' => 'User login failed'
+                    'message' => 'User login failed',
+                    'error' => mysqli_error($con)
                 ]
             );
         }
